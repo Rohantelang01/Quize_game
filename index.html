@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GK Quiz</title>
+  
+  <!-- Fonts Linking -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS File Linking -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SCREEN 1: SETUP -->
+  <div id="screen-select" class="screen active">
+    <div class="sel-topbar">
+      <div class="brand"><div class="brand-dot"></div>LUCENT'S GK QUIZ</div>
+      <div style="display:flex;gap:10px;">
+        <a href="admin-panel.html" style="text-decoration:none;">
+          <button class="btn-reset" style="background:#667eea;color:white;border:none;cursor:pointer;">⚙️ Admin Panel</button>
+        </a>
+        <button class="btn-reset" onclick="resetFilters()">↺ Reset Filters</button>
+      </div>
+    </div>
+    <div class="filter-wrap">
+      
+      <div id="active-filters" class="active-filters-container"></div>
+
+      <div class="filter-grid">
+        <div class="fg"><div class="fg-label">Subject</div><div id="ms-wrapper-subject"></div></div>
+        <div class="fg"><div class="fg-label">Chapter</div><div id="ms-wrapper-chapter"></div></div>
+        <div class="fg"><div class="fg-label">Section</div><div id="ms-wrapper-section"></div></div>
+        <div class="fg"><div class="fg-label">Topic</div><div id="ms-wrapper-topic"></div></div>
+        <div class="fg span2"><div class="fg-label">Subtopic</div><div id="ms-wrapper-subtopic"></div></div>
+        <div class="fg"><div class="fg-label">Exam Type</div><div id="ms-wrapper-exam"></div></div>
+        <div class="fg"><div class="fg-label">Difficulty</div><div id="ms-wrapper-diff"></div></div>
+        
+        <div class="fg" style="display:flex;align-items:center;">
+          <label class="py-row" id="py-row" onclick="togglePY()">
+            <div class="py-box"></div>
+            <span class="py-label">Previous Year (PYQ) Only</span>
+          </label>
+        </div>
+
+        <div class="fg span3">
+          <div class="fg-label">Quiz Mode</div>
+          <div class="toggle-row">
+            <div class="tcard active" id="t-rq" onclick="toggleMode('rq')">
+              <div class="tcard-icon">🔀</div>
+              <div><div class="tcard-name">Random Questions</div><div class="tcard-desc">Questions will be shuffled</div></div>
+              <div class="tswitch" style="margin-left:auto"><div class="tknob"></div></div>
+            </div>
+            <div class="tcard active" id="t-ro" onclick="toggleMode('ro')">
+              <div class="tcard-icon">🔄</div>
+              <div><div class="tcard-name">Random Options</div><div class="tcard-desc">A/B/C/D will be shuffled</div></div>
+              <div class="tswitch" style="margin-left:auto"><div class="tknob"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="start-bar">
+        <div class="qcount">
+          <div class="qcount-num" id="q-count">0</div>
+          <div class="qcount-label">Questions Available</div>
+        </div>
+        <button class="btn-start" id="btn-start" onclick="startQuiz()">Start Quiz →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-topbar">
+      <div class="breadcrumb" id="q-breadcrumb">—</div>
+      <div class="timer" id="timer">00:00</div>
+      <div class="live-score">🏆 <span id="live-score">0</span> <span style="font-size:11px;color:var(--text-muted)">/ <span id="live-total">0</span></span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div class="quiz-body">
+      <div class="q-card">
+        <div class="q-meta">
+          <div class="q-tags" id="q-tags"></div>
+          <div class="q-progress-text" id="progress-text">1 / 0</div>
+        </div>
+
+        <div class="q-text" id="q-text">Loading question...</div>
+
+        <div class="quiz-actions-mid">
+          <button class="btn btn-ghost" onclick="confirmExit()">✕ Exit</button>
+          <div class="actions-right">
+            <button class="btn btn-ghost" id="btn-skip" onclick="skipQ()">Skip →</button>
+            <button class="btn btn-primary" id="btn-next" onclick="nextQ()" style="display:none">Next →</button>
+          </div>
+        </div>
+
+        <div class="options-grid" id="options-grid"></div>
+
+        <div class="exp-box" id="exp-box">
+          <div class="exp-label" id="exp-label">Explanation</div>
+          <div class="exp-text" id="exp-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: RESULT -->
+  <div id="screen-result" class="screen">
+    <div class="result-inner">
+      <div class="result-top">
+        <div class="score-ring">
+          <div class="score-big" id="res-score">0</div>
+          <div class="score-of">out of <span id="res-total">0</span></div>
+        </div>
+        <div class="result-msg" id="res-msg">Good Job!</div>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-n g" id="res-correct">0</div><div class="stat-l">Correct</div></div>
+        <div class="stat"><div class="stat-n r" id="res-wrong">0</div><div class="stat-l">Wrong</div></div>
+        <div class="stat"><div class="stat-n y" id="res-skip">0</div><div class="stat-l">Skipped</div></div>
+        <div class="stat"><div class="stat-n b" id="res-acc">0%</div><div class="stat-l">Accuracy</div></div>
+      </div>
+      
+      <div class="card"><div class="card-title">Score by Subject</div><div id="breakdown-rows" style="font-size:14px;"></div></div>
+      
+      <div class="result-actions">
+        <button class="btn btn-ghost btn-lg" onclick="showScreen('select')">← New Quiz</button>
+        <button class="btn btn-primary btn-lg" onclick="showReview()">Review Answers →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: REVIEW -->
+  <div id="screen-review" class="screen">
+    <div class="review-topbar">
+      <div class="review-title">Answer Review</div>
+      <div class="rev-pills">
+        <div class="rev-pill active" data-f="all" onclick="setRevFilter('all')">All</div>
+        <div class="rev-pill" data-f="correct" onclick="setRevFilter('correct')">Correct</div>
+        <div class="rev-pill" data-f="wrong" onclick="setRevFilter('wrong')">Wrong / Skipped</div>
+      </div>
+    </div>
+    
+    <div id="review-list"></div>
+    
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:24px; padding-bottom: 40px;">
+      <button class="btn btn-ghost btn-lg" onclick="showScreen('result')">← Back to Result</button>
+      <button class="btn btn-primary btn-lg" onclick="resetFilters(); showScreen('select');">Start New Quiz →</button>
+    </div>
+  </div>
+
+  <!-- JavaScript Files Linking -->
+  <!-- Pehle Firebase config load hoga, fir Firestore service, fir main logic chalega -->
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="firestore-service.js"></script>
+  <script type="module" src="quiz.js"></script>
+
+</body>
+</html>
+
+

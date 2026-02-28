@@ -1,0 +1,24 @@
+# Firebase Credentials (NEVER commit to GitHub)
+quizegame-e565e-firebase-adminsdk-fbsvc-52f48c60cd.json
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+node_modules/
+dist/
+
+# Backup files
+*.backup
+*.bak

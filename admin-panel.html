@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Quiz Question Manager</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #667eea;
+    }
+
+    .upload-area {
+      border: 2px dashed #667eea;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #f8f9ff;
+    }
+
+    .upload-area:hover {
+      border-color: #764ba2;
+      background: #f0f2ff;
+    }
+
+    .upload-area.dragover {
+      border-color: #28a745;
+      background: #f0fff4;
+      transform: scale(1.02);
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .upload-text {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .upload-text strong {
+      color: #333;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .info-box {
+      background: #e7f3ff;
+      border-left: 4px solid #2196F3;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #1565c0;
+      line-height: 1.6;
+    }
+
+    .warning-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #856404;
+      line-height: 1.6;
+    }
+
+    .status-box {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      max-height: 250px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .log-entry {
+      margin: 5px 0;
+      padding: 3px 0;
+      word-break: break-word;
+    }
+
+    .log-success {
+      color: #28a745;
+    }
+
+    .log-error {
+      color: #dc3545;
+    }
+
+    .log-info {
+      color: #0066cc;
+    }
+
+    .log-warning {
+      color: #ff6600;
+    }
+
+    .progress-section {
+      display: none;
+    }
+
+    .progress-section.show {
+      display: block;
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .json-template {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      max-height: 200px;
+      overflow-y: auto;
+      color: #333;
+    }
+
+    .copy-btn {
+      background: #667eea;
+      color: white;
+      padding: 8px 12px;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    .copy-btn:hover {
+      background: #5568d3;
+    }
+
+    .stat-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: #f8f9ff;
+      border: 1px solid #e0e6ff;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>📊 Admin Panel - Question Manager</h1>
+      <p>Upload bulk questions directly from JSON file</p>
+    </div>
+
+    <div class="content">
+      <!-- Upload Section -->
+      <div class="section">
+        <div class="section-title">📤 Upload Questions from JSON</div>
+        
+        <div class="info-box">
+          ✅ <strong>Bulk Upload:</strong> Upload 40+ questions at once<br>
+          📁 <strong>Format:</strong> JSON file with questions array<br>
+          ⚡ <strong>Speed:</strong> All questions uploaded instantly to Firestore
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">
+            <strong>Click to upload JSON file or drag & drop</strong>
+            Select your JSON file with questions
+          </div>
+        </div>
+
+        <input type="file" id="fileInput" accept=".json" />
+
+        <div class="button-group">
+          <button class="btn-primary" id="selectBtn" onclick="document.getElementById('fileInput').click()">
+            📁 Select JSON File
+          </button>
+          <button class="btn-secondary" onclick="showTemplate()">
+            📋 View Template
+          </button>
+        </div>
+
+        <!-- Template Section -->
+        <div id="templateSection" style="display: none; margin-top: 20px;">
+          <div class="warning-box">
+            💡 <strong>JSON Format Required:</strong> Your file must contain an array of question objects<br>
+            Copy the template below and fill in your questions
+          </div>
+          <div class="json-template" id="templateCode"></div>
+          <button class="copy-btn" onclick="copyTemplate()">📋 Copy Template</button>
+        </div>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="section progress-section" id="progressSection">
+        <div class="section-title">⏳ Upload Progress</div>
+        
+        <div class="progress" id="progressBar">
+          <div class="progress-bar" id="progressBarFill"></div>
+        </div>
+        
+        <div class="progress-text">
+          <span id="progressPercent">0</span>% Complete
+          (<span id="uploadCount">0</span> / <span id="totalCount">0</span>)
+        </div>
+
+        <div class="status-box" id="statusBox"></div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div class="section" id="statsSection" style="display: none;">
+        <div class="section-title">📈 Upload Summary</div>
+        
+        <div class="stat-box">
+          <div class="stat-card">
+            <div class="stat-number" id="statTotal">0</div>
+            <div class="stat-label">Total Questions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statSuccess">0</div>
+            <div class="stat-label">Successfully Added</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statFailed">0</div>
+            <div class="stat-label">Failed</div>
+          </div>
+        </div>
+
+        <div class="button-group" style="margin-top: 20px;">
+          <button class="btn-primary" onclick="location.href='index.html'">
+            ← Back to Quiz
+          </button>
+          <button class="btn-secondary" onclick="resetUpload()">
+            ⟳ Upload More
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtcwji9ER0Gg0iqcSPTNAMTJOEqbys854",
+      authDomain: "quize-game-38978.firebaseapp.com",
+      projectId: "quize-game-38978",
+      storageBucket: "quize-game-38978.firebasestorage.app",
+      messagingSenderId: "380606437578",
+      appId: "1:380606437578:web:74d9e896f9030317437c33"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const statusBox = document.getElementById('statusBox');
+    const progressSection = document.getElementById('progressSection');
+    const statsSection = document.getElementById('statsSection');
+
+    // Drag & Drop
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file) return;
+
+      if (!file.name.endsWith('.json')) {
+        alert('❌ Please select a JSON file!');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const jsonData = JSON.parse(e.target.result);
+          
+          if (!Array.isArray(jsonData)) {
+            throw new Error('JSON must be an array of questions');
+          }
+
+          uploadQuestions(jsonData);
+        } catch (error) {
+          alert(`❌ JSON Error: ${error.message}`);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    async function uploadQuestions(questions) {
+      if (questions.length === 0) {
+        alert('❌ No questions in JSON!');
+        return;
+      }
+
+      progressSection.classList.add('show');
+      document.getElementById('totalCount').innerText = questions.length;
+      statusBox.innerHTML = '';
+
+      let successCount = 0;
+      let failedCount = 0;
+
+      for (let i = 0; i < questions.length; i++) {
+        const q = questions[i];
+        const qNumber = i + 1;
+
+        try {
+          logProgress(`⏳ [${qNumber}/${questions.length}] Processing: ${q.question.substring(0, 50)}...`, 'info');
+
+          // Validate question structure
+          if (!q.question_id || !q.question || !q.options || !q.correct_answer) {
+            throw new Error('Missing required fields');
+          }
+
+          // Find or create subject
+          const subjectsRef = db.collection('subjects');
+          let subjectDoc = null;
+
+          const subjectSnapshot = await subjectsRef.where('subject', '==', q.subject).limit(1).get();
+          
+          if (!subjectSnapshot.empty) {
+            subjectDoc = subjectSnapshot.docs[0];
+          } else {
+            // Create new subject
+            const newSubject = {
+              subject: q.subject,
+              subject_id: `SUB_${Date.now()}`,
+              chapter: q.chapter || '',
+              chapter_id: `CHA_${Date.now()}`,
+              section: q.section || '',
+              section_id: `SEC_${Date.now()}`,
+              topic: q.topic || '',
+              topic_id: `TOP_${Date.now()}`,
+              subtopics: []
+            };
+            const docRef = await subjectsRef.add(newSubject);
+            subjectDoc = await docRef.get();
+          }
+
+          let subjectData = subjectDoc.data();
+          let subtopicFound = false;
+
+          // Find or add subtopic
+          if (!subjectData.subtopics) subjectData.subtopics = [];
+
+          for (let st of subjectData.subtopics) {
+            if (st.subtopic === q.subtopic) {
+              subtopicFound = true;
+              if (!st.questions) st.questions = [];
+              st.questions.push(q);
+              break;
+            }
+          }
+
+          if (!subtopicFound) {
+            subjectData.subtopics.push({
+              subtopic: q.subtopic || 'General',
+              subtopic_id: `STOP_${Date.now()}`,
+              questions: [q]
+            });
+          }
+
+          // Update subject
+          await subjectDoc.ref.update({ subtopics: subjectData.subtopics });
+
+          logProgress(`✅ [${qNumber}/${questions.length}] Success: ${q.question.substring(0, 50)}...`, 'success');
+          successCount++;
+
+        } catch (error) {
+          logProgress(`❌ [${qNumber}/${questions.length}] Error: ${error.message}`, 'error');
+          failedCount++;
+        }
+
+        // Update progress bar
+        const percent = Math.round(((i + 1) / questions.length) * 100);
+        document.getElementById('progressBarFill').style.width = percent + '%';
+        document.getElementById('progressPercent').innerText = percent;
+        document.getElementById('uploadCount').innerText = i + 1;
+      }
+
+      // Show summary
+      logProgress(`\n✅ Upload Complete!`, 'success');
+      logProgress(`📊 Total: ${questions.length} | Success: ${successCount} | Failed: ${failedCount}`, 'info');
+
+      showStats(questions.length, successCount, failedCount);
+    }
+
+    function logProgress(message, type = 'info') {
+      const entry = document.createElement('div');
+      entry.className = `log-entry log-${type}`;
+      entry.textContent = message;
+      statusBox.appendChild(entry);
+      statusBox.scrollTop = statusBox.scrollHeight;
+    }
+
+    function showStats(total, success, failed) {
+      document.getElementById('statTotal').innerText = total;
+      document.getElementById('statSuccess').innerText = success;
+      document.getElementById('statFailed').innerText = failed;
+      statsSection.style.display = 'block';
+    }
+
+    function showTemplate() {
+      const template = [
+        {
+          "subject": "General Knowledge",
+          "subject_id": "SUB_GK",
+          "chapter": "Geography",
+          "chapter_id": "CHA_GEO",
+          "section": "World Geography",
+          "section_id": "SEC_WG",
+          "topic": "Countries",
+          "topic_id": "TOP_COUNTRIES",
+          "subtopic": "European Countries",
+          "subtopic_id": "STOP_EU",
+          "question_id": "Q1001",
+          "question": "What is the capital of France?",
+          "options": {
+            "A": "London",
+            "B": "Paris",
+            "C": "Berlin",
+            "D": "Madrid"
+          },
+          "correct_answer": "B",
+          "explanation": "Paris is the capital and largest city of France.",
+          "difficulty": "easy",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2020"
+          },
+          "tags": ["geography", "capitals", "europe"]
+        }
+      ];
+
+      document.getElementById('templateCode').textContent = JSON.stringify(template, null, 2);
+      document.getElementById('templateSection').style.display = 'block';
+    }
+
+    function copyTemplate() {
+      const code = document.getElementById('templateCode').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        alert('✅ Template copied to clipboard!');
+      });
+    }
+
+    function resetUpload() {
+      fileInput.value = '';
+      statusBox.innerHTML = '';
+      progressSection.classList.remove('show');
+      statsSection.style.display = 'none';
+      document.getElementById('progressBarFill').style.width = '0%';
+    }
+
+    // Show template on load
+    showTemplate();
+  </script>
+
+</body>
+</html>
