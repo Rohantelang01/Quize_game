@@ -4,11 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GK Quiz</title>
-  
-  <!-- Fonts Linking -->
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- CSS File Linking -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,17 +13,10 @@
   <div id="screen-select" class="screen active">
     <div class="sel-topbar">
       <div class="brand"><div class="brand-dot"></div>LUCENT'S GK QUIZ</div>
-      <div style="display:flex;gap:10px;">
-        <a href="admin-panel.html" style="text-decoration:none;">
-          <button class="btn-reset" style="background:#667eea;color:white;border:none;cursor:pointer;">⚙️ Admin Panel</button>
-        </a>
-        <button class="btn-reset" onclick="resetFilters()">↺ Reset Filters</button>
-      </div>
+      <button class="btn-reset" onclick="resetFilters()">↺ Reset Filters</button>
     </div>
     <div class="filter-wrap">
-      
       <div id="active-filters" class="active-filters-container"></div>
-
       <div class="filter-grid">
         <div class="fg"><div class="fg-label">Subject</div><div id="ms-wrapper-subject"></div></div>
         <div class="fg"><div class="fg-label">Chapter</div><div id="ms-wrapper-chapter"></div></div>
@@ -36,23 +25,20 @@
         <div class="fg span2"><div class="fg-label">Subtopic</div><div id="ms-wrapper-subtopic"></div></div>
         <div class="fg"><div class="fg-label">Exam Type</div><div id="ms-wrapper-exam"></div></div>
         <div class="fg"><div class="fg-label">Difficulty</div><div id="ms-wrapper-diff"></div></div>
-        
-        <div class="fg" style="display:flex;align-items:center;gap:20px;">
+        <div class="fg" style="display:flex;align-items:center;">
           <label class="py-row" id="py-row" onclick="togglePY()">
             <div class="py-box"></div>
             <span class="py-label">Previous Year (PYQ) Only</span>
           </label>
         </div>
-
         <div class="fg span2">
-          <div class="fg-label">Filter by Flag Level</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="flag-btn" data-flag="clear" onclick="toggleFlagFilter('clear')">Clear</button>
+          <div class="fg-label">Filter by Flag</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+            <button class="flag-btn" data-flag="clear"     onclick="toggleFlagFilter('clear')">Clear</button>
             <button class="flag-btn" data-flag="confusing" onclick="toggleFlagFilter('confusing')">Confusing</button>
-            <button class="flag-btn" data-flag="hard" onclick="toggleFlagFilter('hard')">Hard</button>
+            <button class="flag-btn" data-flag="hard"      onclick="toggleFlagFilter('hard')">Hard</button>
           </div>
         </div>
-
         <div class="fg span3">
           <div class="fg-label">Quiz Mode</div>
           <div class="toggle-row">
@@ -69,7 +55,6 @@
           </div>
         </div>
       </div>
-
       <div class="start-bar">
         <div class="qcount">
           <div class="qcount-num" id="q-count">0</div>
@@ -85,67 +70,57 @@
     <div class="quiz-topbar">
       <div class="breadcrumb" id="q-breadcrumb">—</div>
       <div class="timer" id="timer">00:00</div>
-      <div class="live-score">🏆 <span id="live-score">0</span> <span style="font-size:11px;color:var(--text-muted)">/ <span id="live-total">0</span></span></div>
+      <div class="live-score">🏆 <span id="live-score">0</span>
+        <span style="font-size:11px;color:var(--text-muted)">/ <span id="live-total">0</span></span>
+      </div>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-
     <div class="quiz-body">
       <div class="q-card">
         <div class="q-meta">
           <div class="q-tags" id="q-tags"></div>
           <div class="q-progress-text" id="progress-text">1 / 0</div>
         </div>
-
         <div class="q-text" id="q-text">Loading question...</div>
-
         <div class="quiz-actions-mid">
           <button class="btn btn-ghost" onclick="confirmExit()">✕ Exit</button>
-          <!-- added back button for easier navigation -->
-          <button class="btn btn-ghost" onclick="confirmExit()" style="margin-left:8px;">← Home</button>
           <div class="actions-right">
             <button class="btn btn-ghost" id="btn-skip" onclick="skipQ()">Skip →</button>
             <button class="btn btn-primary" id="btn-next" onclick="nextQ()" style="display:none">Next →</button>
           </div>
         </div>
-
         <div class="options-grid" id="options-grid"></div>
-
-        <!-- MARATHI TRANSLATION DISPLAY (Hidden by default) -->
-        <div id="marathi-panel" style="display:none; margin-top:16px; border:1px solid #ddd; border-radius:8px; padding:12px; background:#f0f7ff;">
-          <div style="font-weight:bold; margin-bottom:8px; color:#1f2937;">🔁 Marathi Translation</div>
-          <div id="marathi-question" style="margin-bottom:12px; padding:8px; background:white; border-radius:4px; border-left:3px solid #4338ca;">
-            <!-- Marathi question will appear here -->
-          </div>
-          <div style="font-size:12px; font-weight:600; color:#666; margin-bottom:4px;">Options:</div>
-          <div id="marathi-options" style="display:flex; flex-direction:column; gap:8px;">
-            <!-- Marathi options will appear here -->
-          </div>
+        <!-- Marathi Panel -->
+        <div id="marathi-panel" style="display:none;margin-top:16px;border:1px solid #ddd;border-radius:8px;padding:12px;background:#f0f7ff;">
+          <div style="font-weight:bold;margin-bottom:8px;color:#1f2937;">🔁 Marathi Translation</div>
+          <div id="marathi-question" style="margin-bottom:12px;padding:8px;background:white;border-radius:4px;border-left:3px solid #4338ca;"></div>
+          <div style="font-size:12px;font-weight:600;color:#666;margin-bottom:4px;">Options:</div>
+          <div id="marathi-options" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
-        <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
-          <button class="btn btn-secondary" id="btn-hint" onclick="showHint()" style="flex:0 0 auto;">💡 Hint</button>
+        <!-- AI Buttons -->
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-secondary" id="btn-hint"    onclick="showHint()"                style="flex:0 0 auto;">💡 Hint</button>
           <button class="btn btn-secondary" id="btn-explain" onclick="showDetailedExplanation()" style="flex:0 0 auto;">📖 Explain</button>
-          <button class="btn btn-secondary" id="btn-translate" onclick="translateToMarathi()" style="flex:0 0 auto;">🔁 Marathi</button>
-          <select id="flag-dropdown" onchange="setQuestionFlag(this.value)" style="padding:8px 12px; border-radius:4px; border:1px solid #ccc; font-size:14px; cursor:pointer;">
-            <option value="">Set Flag</option>
+          <button class="btn btn-secondary" id="btn-translate" onclick="translateToMarathi()"    style="flex:0 0 auto;">🔁 Marathi</button>
+          <select id="flag-dropdown" onchange="setQuestionFlag(this.value)"
+                  style="padding:8px 12px;border-radius:4px;border:1px solid #ccc;font-size:14px;cursor:pointer;font-family:inherit;">
+            <option value="">🚩 Set Flag</option>
             <option value="clear">Clear</option>
             <option value="confusing">Confusing</option>
             <option value="hard">Hard</option>
           </select>
           <button class="btn btn-secondary" id="btn-discussion-toggle" onclick="toggleDiscussionPanel()" style="flex:0 0 auto;">💬 Discuss</button>
         </div>
-
-        <!-- DISCUSSION SECTION (Hidden by default) -->
-        <div id="discussion-panel" style="display:none; margin-top:16px; border:1px solid #ddd; border-radius:8px; padding:12px; background:#f9f9f9; max-height:500px; overflow-y:auto;">
-          <div style="font-weight:bold; margin-bottom:8px; color:#333;">💬 Discussion Room</div>
-          <div id="discussion-messages" style="margin-bottom:12px; font-size:13px; max-height:350px; overflow-y:auto; border:1px solid #eee; border-radius:4px; padding:8px; background:white;">
-            <!-- Messages will appear here -->
-          </div>
-          <div style="display:flex; gap:8px;">
-            <input type="text" id="discussion-input" placeholder="Ask anything about this question..." style="flex:1; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:13px;">
-            <button class="btn btn-primary" id="btn-send-message" onclick="sendDiscussionMessage()" style="padding:8px 16px; font-size:13px;">Send</button>
+        <!-- Discussion Panel -->
+        <div id="discussion-panel" style="display:none;margin-top:16px;border:1px solid #ddd;border-radius:8px;padding:12px;background:#f9f9f9;">
+          <div style="font-weight:bold;margin-bottom:8px;color:#333;">💬 Discussion Room</div>
+          <div id="discussion-messages" style="margin-bottom:12px;font-size:13px;max-height:350px;overflow-y:auto;border:1px solid #eee;border-radius:4px;padding:8px;background:white;"></div>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="discussion-input" placeholder="Ask anything about this question..."
+                   style="flex:1;padding:8px;border:1px solid #ccc;border-radius:4px;font-size:13px;font-family:inherit;">
+            <button class="btn btn-primary" id="btn-send-message" onclick="sendDiscussionMessage()" style="padding:8px 16px;font-size:13px;">Send</button>
           </div>
         </div>
-
         <div class="exp-box" id="exp-box">
           <div class="exp-label" id="exp-label">Explanation</div>
           <div class="exp-text" id="exp-text"></div>
@@ -164,16 +139,13 @@
         </div>
         <div class="result-msg" id="res-msg">Good Job!</div>
       </div>
-      
       <div class="stats-grid">
         <div class="stat"><div class="stat-n g" id="res-correct">0</div><div class="stat-l">Correct</div></div>
         <div class="stat"><div class="stat-n r" id="res-wrong">0</div><div class="stat-l">Wrong</div></div>
         <div class="stat"><div class="stat-n y" id="res-skip">0</div><div class="stat-l">Skipped</div></div>
         <div class="stat"><div class="stat-n b" id="res-acc">0%</div><div class="stat-l">Accuracy</div></div>
       </div>
-      
       <div class="card"><div class="card-title">Score by Subject</div><div id="breakdown-rows" style="font-size:14px;"></div></div>
-      
       <div class="result-actions">
         <button class="btn btn-ghost btn-lg" onclick="showScreen('select')">← New Quiz</button>
         <button class="btn btn-primary btn-lg" onclick="showReview()">Review Answers →</button>
@@ -186,29 +158,35 @@
     <div class="review-topbar">
       <div class="review-title">Answer Review</div>
       <div class="rev-pills">
-        <div class="rev-pill active" data-f="all" onclick="setRevFilter('all')">All</div>
-        <div class="rev-pill" data-f="correct" onclick="setRevFilter('correct')">Correct</div>
-        <div class="rev-pill" data-f="wrong" onclick="setRevFilter('wrong')">Wrong / Skipped</div>
+        <div class="rev-pill active" data-f="all"     onclick="setRevFilter('all')">All</div>
+        <div class="rev-pill"        data-f="correct" onclick="setRevFilter('correct')">Correct</div>
+        <div class="rev-pill"        data-f="wrong"   onclick="setRevFilter('wrong')">Wrong / Skipped</div>
       </div>
     </div>
-    
     <div id="review-list"></div>
-    
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:24px; padding-bottom: 40px;">
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;padding-bottom:40px;">
       <button class="btn btn-ghost btn-lg" onclick="showScreen('result')">← Back to Result</button>
-      <button class="btn btn-primary btn-lg" onclick="resetFilters(); showScreen('select');">Start New Quiz →</button>
+      <button class="btn btn-primary btn-lg" onclick="resetFilters();showScreen('select');">Start New Quiz →</button>
     </div>
   </div>
 
-  <!-- JavaScript Files Linking -->
-  <!-- Load Firebase config first, then Firestore service, then AI service, then main logic -->
-  <script type="module" src="firebase-config.js"></script>
-  <script type="module" src="firestore-service.js"></script>
-  <script type="module" src="gemini-service.js"></script>
-  <script type="module" src="quiz.js"></script>
-  <!-- update-flags.js is an admin utility and not needed on the quiz page; removed to avoid namespace conflicts -->
+  <!--
+    SCRIPT LOAD ORDER:
+    1. data.js         → RAW_DATA (questions)
+    2. config.js       → CONFIG (API key - gitignored!)
+    3. gemini-service  → AI API calls
+    4. filters.js      → Filter UI
+    5. ai-features.js  → Hint, Explain, Marathi, Discussion
+    6. results.js      → Finish, Review
+    7. quiz-core.js    → Main init (LAST - depends on all above)
+  -->
+  <script src="data.js"></script>
+  <script src="config.js"></script>
+  <script src="gemini-service.js"></script>
+  <script src="filters.js"></script>
+  <script src="ai-features.js"></script>
+  <script src="results.js"></script>
+  <script src="quiz-core.js"></script>
 
 </body>
 </html>
-
-
