@@ -31,10 +31,10 @@ export async function loadQuestionsFromFirestore() {
         
         subTopObj.questions.forEach(q => {
           const optsArray = [];
-          if(q.options.A) optsArray.push({ key: 'A', text: q.options.A });
-          if(q.options.B) optsArray.push({ key: 'B', text: q.options.B });
-          if(q.options.C) optsArray.push({ key: 'C', text: q.options.C });
-          if(q.options.D) optsArray.push({ key: 'D', text: q.options.D });
+          if(q.options.A) optsArray.push({ key: 'A', text: q.options.A, image: q.options.A_image || null });
+          if(q.options.B) optsArray.push({ key: 'B', text: q.options.B, image: q.options.B_image || null });
+          if(q.options.C) optsArray.push({ key: 'C', text: q.options.C, image: q.options.C_image || null });
+          if(q.options.D) optsArray.push({ key: 'D', text: q.options.D, image: q.options.D_image || null });
 
           flatList.push({
             id: q.question_id,
@@ -44,12 +44,14 @@ export async function loadQuestionsFromFirestore() {
             topic: subObj.topic,
             subtopic: subTopObj.subtopic,
             q: q.question,
+            questionImage: q.question_image || null,        // Future image support for question
             optionsData: optsArray,
             ansKey: q.correct_answer, 
             exp: q.explanation,
             exam: q.exam,
             diff: q.difficulty,
-            py: q.prev_year ? q.prev_year.asked : false
+            py: q.prev_year ? q.prev_year.asked : false,
+            flag: q.flag || 'clear'                          // Flag field: 'clear', 'confusing', 'hard'
           });
         });
       });

@@ -37,11 +37,20 @@
         <div class="fg"><div class="fg-label">Exam Type</div><div id="ms-wrapper-exam"></div></div>
         <div class="fg"><div class="fg-label">Difficulty</div><div id="ms-wrapper-diff"></div></div>
         
-        <div class="fg" style="display:flex;align-items:center;">
+        <div class="fg" style="display:flex;align-items:center;gap:20px;">
           <label class="py-row" id="py-row" onclick="togglePY()">
             <div class="py-box"></div>
             <span class="py-label">Previous Year (PYQ) Only</span>
           </label>
+        </div>
+
+        <div class="fg span2">
+          <div class="fg-label">Filter by Flag Level</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="flag-btn" data-flag="clear" onclick="toggleFlagFilter('clear')">Clear</button>
+            <button class="flag-btn" data-flag="confusing" onclick="toggleFlagFilter('confusing')">Confusing</button>
+            <button class="flag-btn" data-flag="hard" onclick="toggleFlagFilter('hard')">Hard</button>
+          </div>
         </div>
 
         <div class="fg span3">
@@ -91,6 +100,8 @@
 
         <div class="quiz-actions-mid">
           <button class="btn btn-ghost" onclick="confirmExit()">✕ Exit</button>
+          <!-- added back button for easier navigation -->
+          <button class="btn btn-ghost" onclick="confirmExit()" style="margin-left:8px;">← Home</button>
           <div class="actions-right">
             <button class="btn btn-ghost" id="btn-skip" onclick="skipQ()">Skip →</button>
             <button class="btn btn-primary" id="btn-next" onclick="nextQ()" style="display:none">Next →</button>
@@ -98,6 +109,42 @@
         </div>
 
         <div class="options-grid" id="options-grid"></div>
+
+        <!-- MARATHI TRANSLATION DISPLAY (Hidden by default) -->
+        <div id="marathi-panel" style="display:none; margin-top:16px; border:1px solid #ddd; border-radius:8px; padding:12px; background:#f0f7ff;">
+          <div style="font-weight:bold; margin-bottom:8px; color:#1f2937;">🔁 Marathi Translation</div>
+          <div id="marathi-question" style="margin-bottom:12px; padding:8px; background:white; border-radius:4px; border-left:3px solid #4338ca;">
+            <!-- Marathi question will appear here -->
+          </div>
+          <div style="font-size:12px; font-weight:600; color:#666; margin-bottom:4px;">Options:</div>
+          <div id="marathi-options" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Marathi options will appear here -->
+          </div>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+          <button class="btn btn-secondary" id="btn-hint" onclick="showHint()" style="flex:0 0 auto;">💡 Hint</button>
+          <button class="btn btn-secondary" id="btn-explain" onclick="showDetailedExplanation()" style="flex:0 0 auto;">📖 Explain</button>
+          <button class="btn btn-secondary" id="btn-translate" onclick="translateToMarathi()" style="flex:0 0 auto;">🔁 Marathi</button>
+          <select id="flag-dropdown" onchange="setQuestionFlag(this.value)" style="padding:8px 12px; border-radius:4px; border:1px solid #ccc; font-size:14px; cursor:pointer;">
+            <option value="">Set Flag</option>
+            <option value="clear">Clear</option>
+            <option value="confusing">Confusing</option>
+            <option value="hard">Hard</option>
+          </select>
+          <button class="btn btn-secondary" id="btn-discussion-toggle" onclick="toggleDiscussionPanel()" style="flex:0 0 auto;">💬 Discuss</button>
+        </div>
+
+        <!-- DISCUSSION SECTION (Hidden by default) -->
+        <div id="discussion-panel" style="display:none; margin-top:16px; border:1px solid #ddd; border-radius:8px; padding:12px; background:#f9f9f9; max-height:500px; overflow-y:auto;">
+          <div style="font-weight:bold; margin-bottom:8px; color:#333;">💬 Discussion Room</div>
+          <div id="discussion-messages" style="margin-bottom:12px; font-size:13px; max-height:350px; overflow-y:auto; border:1px solid #eee; border-radius:4px; padding:8px; background:white;">
+            <!-- Messages will appear here -->
+          </div>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="discussion-input" placeholder="Ask anything about this question..." style="flex:1; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:13px;">
+            <button class="btn btn-primary" id="btn-send-message" onclick="sendDiscussionMessage()" style="padding:8px 16px; font-size:13px;">Send</button>
+          </div>
+        </div>
 
         <div class="exp-box" id="exp-box">
           <div class="exp-label" id="exp-label">Explanation</div>
@@ -154,10 +201,12 @@
   </div>
 
   <!-- JavaScript Files Linking -->
-  <!-- Pehle Firebase config load hoga, fir Firestore service, fir main logic chalega -->
+  <!-- Load Firebase config first, then Firestore service, then AI service, then main logic -->
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="firestore-service.js"></script>
+  <script type="module" src="gemini-service.js"></script>
   <script type="module" src="quiz.js"></script>
+  <!-- update-flags.js is an admin utility and not needed on the quiz page; removed to avoid namespace conflicts -->
 
 </body>
 </html>

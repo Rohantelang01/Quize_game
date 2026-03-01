@@ -332,9 +332,24 @@
           <button class="btn-primary" id="selectBtn" onclick="document.getElementById('fileInput').click()">
             📁 Select JSON File
           </button>
+          <button class="btn-secondary" onclick="togglePasteMode()">
+            📋 Paste JSON
+          </button>
           <button class="btn-secondary" onclick="showTemplate()">
             📋 View Template
           </button>
+        </div>
+
+        <!-- Paste JSON Section -->
+        <div id="pasteSection" style="display: none; margin-top: 20px;">
+          <div class="warning-box">
+            💡 <strong>Paste JSON Mode:</strong> Paste your JSON data below and click Upload
+          </div>
+          <textarea id="jsonPaste" placeholder="Paste your JSON array here..." style="width:100%; height:200px; padding:10px; font-family:monospace; border:1px solid #ccc; border-radius:4px; font-size:12px;"></textarea>
+          <div class="button-group" style="margin-top:10px;">
+            <button class="btn-success" onclick="uploadFromPaste()">✅ Upload from Paste</button>
+            <button class="btn-secondary" onclick="togglePasteMode()">❌ Cancel</button>
+          </div>
         </div>
 
         <!-- Template Section -->
@@ -398,6 +413,9 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+  <!-- Gemini AI SDK -->
+  <script type="module" src="gemini-service.js"></script>
 
   <script>
     // Firebase Config
@@ -627,6 +645,116 @@
       progressSection.classList.remove('show');
       statsSection.style.display = 'none';
       document.getElementById('progressBarFill').style.width = '0%';
+    }
+
+    // PASTE MODE FUNCTIONS
+    function togglePasteMode() {
+      const pasteSection = document.getElementById('pasteSection');
+      pasteSection.style.display = pasteSection.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function uploadFromPaste() {
+      const jsonText = document.getElementById('jsonPaste').value.trim();
+
+      if (!jsonText) {
+        alert('❌ Please paste JSON data');
+        return;
+      }
+
+      try {
+        logProgress('🔍 Validating JSON with AI...', 'info');
+        
+        // Validate with Gemini AI
+        const validationResult = await validateJSONWithAI(jsonText);
+
+        if (!validationResult.valid) {
+          logProgress('⚠️ AI Validation Warning:', 'warning');
+          logProgress(validationResult.response, 'warning');
+          
+          if (!confirm('❗ AI detected issues. Continue anyway?\n\nAI Report:\n' + validationResult.response)) {
+            return;
+          }
+        } else {
+          logProgress('✅ AI Validation: JSON looks good!', 'success');
+        }
+
+        // Parse and upload
+        const jsonData = JSON.parse(jsonText);
+
+        if (!Array.isArray(jsonData)) {
+          throw new Error('JSON must be an array of questions');
+        }
+
+        uploadQuestions(jsonData);
+      } catch (error) {
+        if (error instanceof SyntaxError) {
+          alert(`❌ Invalid JSON: ${error.message}`);
+        } else {
+          alert(`❌ Error: ${error.message}`);
+        }
+        logProgress(`❌ Error: ${error.message}`, 'error');
+      }
+    }
+
+    // GEMINI AI VALIDATION - IMPROVED
+    const GEMINI_API_KEY = "AIzaSyCuayj6uy98AXE6mxnZYrStixXuYke8DYg";
+    const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
+
+    async function validateJSONWithAI(jsonString) {
+      try {
+        logProgress('🔄 Calling Gemini API...', 'info');
+        
+        const prompt = `You are a JSON validator. Check this data and report:
+1. Is it valid JSON? (yes/no)
+2. Any errors? (list them)
+3. Any issues with quiz structure? (question_id, question, options, correct_answer, etc)
+
+Data:
+${jsonString.substring(0, 1000)}...
+
+Respond in this format:
+VALID: yes/no
+ERRORS: [list or "none"]
+STRUCTURE_ISSUES: [list or "looks good"]`;
+
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: prompt }]
+            }],
+            generationConfig: {
+              temperature: 0.9,
+              maxOutputTokens: 2000
+            }
+          })
+        });
+
+        logProgress('📡 API Response Status: ' + response.status, 'info');
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          logProgress('❌ API Error: ' + (errorData?.error?.message || `Status ${response.status}`), 'error');
+          throw new Error(errorData?.error?.message || `API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        
+        logProgress('✅ Validation Complete', 'success');
+        
+        return {
+          valid: responseText.includes("VALID: yes"),
+          response: responseText
+        };
+      } catch (error) {
+        logProgress('⚠️ Validation failed: ' + error.message, 'warning');
+        return { 
+          valid: false, 
+          response: 'Validation error: ' + error.message 
+        };
+      }
     }
 
     // Show template on load

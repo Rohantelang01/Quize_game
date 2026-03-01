@@ -4,6 +4,7 @@
 
 // Import Firestore service
 import { loadQuestionsFromFirestore } from './firestore-service.js';
+import { getHint, getExplanation, getDiscussionResponse, getMarathiTranslation, validateJSONWithAI } from './gemini-service.js';
 
 let quizDatabase = []; 
 let filteredQuestions = [];
@@ -12,19 +13,35 @@ let currentIndex = 0;
 let userAnswers = []; 
 let timerInterval;
 let timeSeconds = 0;
-let wrongQuestionsForRetry = []; // Galat jawabo ko store karne ke liye
+let wrongQuestionsForRetry = []; // store wrong or skipped questions for retry
 
-let settings = { pyOnly: false, randomQ: true, randomO: true };
+
+let settings = { pyOnly: false, randomQ: true, randomO: true, flagFilter: null };  // flagFilter: null, 'clear', 'confusing', 'hard'
 const filterGroups = ['subject', 'chapter', 'section', 'topic', 'subtopic', 'exam', 'diff'];
 
-// --- 1. DATA FLATTENING LOGIC (Ab Firestore service mein handle ho raha hai) ---
-// Ye function ab use nahi hoga kyunki firestore-service.js apne aap flatten kar deta hai
+// Store question flags: { questionId: 'clear' | 'confusing' | 'hard' }
+let questionFlags = {};
+
+// Load saved flags from localStorage
+loadSavedFlags();
+function loadSavedFlags(){
+  const savedFlags = localStorage.getItem('questionFlags');
+  if(savedFlags) questionFlags = JSON.parse(savedFlags);
+}
+
+// Helper function to get question flag
+function getQuestionFlag(questionId) {
+  return questionFlags[questionId] || 'clear';  // Default is clear
+}
+
+// --- 1. DATA FLATTENING LOGIC (now handled inside firestore-service) ---
+// This function is no longer used because firestore-service.js flattens records automatically
 
 
 // --- 2. INITIALIZATION & CACHE MEMORY ---
 window.onload = async () => {
   try {
-    // Firestore se questions load karna
+    // load questions from Firestore
     quizDatabase = await loadQuestionsFromFirestore();
     
     if(quizDatabase.length === 0) {
@@ -37,11 +54,12 @@ window.onload = async () => {
     checkSavedProgress();
   } catch (error) {
     console.error("❌ Error in window.onload:", error);
-    alert("Data load karte time error aya. Console dekho.");
+    alert("Error occurred loading data. Check console for details.");
   }
 };
 
-// LocalStorage se pichla state check karna
+// check for previous quiz state in LocalStorage
+
 function checkSavedProgress() {
   const saved = localStorage.getItem('lucentQuizProgress');
   if(saved) {
@@ -53,7 +71,7 @@ function checkSavedProgress() {
       resumeBtn.style.backgroundColor = 'var(--warning)';
       resumeBtn.style.color = 'white';
       resumeBtn.style.marginRight = '10px';
-      resumeBtn.innerText = 'Pichla Quiz Resume ↺';
+      resumeBtn.innerText = 'Resume Previous Quiz ↺';
       resumeBtn.onclick = resumeQuiz;
       
       // Start button se pehle add karein
@@ -80,7 +98,8 @@ function clearProgress() {
   if(resumeBtn) resumeBtn.remove();
 }
 
-// Pichla quiz wahi se shuru karna
+// resume quiz from where user left off
+
 function resumeQuiz() {
   const saved = localStorage.getItem('lucentQuizProgress');
   if(saved) {
@@ -91,7 +110,7 @@ function resumeQuiz() {
     timeSeconds = state.timeSeconds;
     
     document.getElementById('live-total').innerText = currentQuiz.length;
-    // Score wapas calculate karna
+    // recalculate score
     let currentScore = userAnswers.filter(a => a.isCorrect).length;
     document.getElementById('live-score').innerText = currentScore;
     
@@ -227,10 +246,29 @@ function renderAllChips() {
     }
   });
   if (settings.pyOnly) chipsHtml += `<div class="filter-chip" style="background:var(--warning); color:white; border:none;"><span class="chip-group-name" style="color:white;">MODE:</span> PYQ Only <div class="chip-remove" style="background:rgba(255,255,255,0.3); color:white;" onclick="togglePY()">✕</div></div>`;
+  if (settings.flagFilter) {
+    chipsHtml += `<div class="filter-chip"><span class="chip-group-name">FLAG:</span> ${settings.flagFilter} <div class="chip-remove" onclick="toggleFlagFilter(null)">✕</div></div>`;
+  }
   container.innerHTML = chipsHtml;
 }
 
 function togglePY() { settings.pyOnly = !settings.pyOnly; document.getElementById('py-row').classList.toggle('active'); renderAllChips(); updateAvailableCount(); }
+
+function toggleFlagFilter(flagLevel) { 
+  // Cycle through: null -> green -> blue -> red -> null
+  if (flagLevel === null) {
+    settings.flagFilter = null;
+    document.querySelectorAll('.flag-btn').forEach(b => b.classList.remove('active'));
+  } else {
+    settings.flagFilter = flagLevel;
+    document.querySelectorAll('.flag-btn').forEach(b => {
+      b.classList.remove('active');
+      if (b.dataset.flag === flagLevel) b.classList.add('active');
+    });
+  }
+  renderAllChips(); 
+  updateAvailableCount(); 
+}
 function toggleMode(mode) {
   if (mode === 'rq') { settings.randomQ = !settings.randomQ; document.getElementById('t-rq').classList.toggle('active'); } 
   else { settings.randomO = !settings.randomO; document.getElementById('t-ro').classList.toggle('active'); }
@@ -249,6 +287,13 @@ function updateAvailableCount() {
     let match = true;
     filterGroups.forEach(g => { if (filters[g].length > 0 && !filters[g].includes(q[g])) match = false; });
     if (settings.pyOnly && !q.py) match = false;
+    
+    // Filter by flag level
+    if (settings.flagFilter) {
+      const qFlag = getQuestionFlag(q.id);
+      if (qFlag !== settings.flagFilter) match = false;
+    }
+    
     return match;
   });
 
@@ -256,7 +301,7 @@ function updateAvailableCount() {
   const btn = document.getElementById('btn-start');
   countEl.innerText = filteredQuestions.length;
   if (filteredQuestions.length === 0) { btn.disabled = true; btn.innerText = "No Questions Available"; countEl.style.color = "var(--text-muted)"; } 
-  else { btn.disabled = false; btn.innerText = "Quiz Shuru Karein →"; countEl.style.color = "var(--primary)"; }
+    else { btn.disabled = false; btn.innerText = "Start Quiz →"; countEl.style.color = "var(--primary)"; }
 }
 
 function resetFilters() {
@@ -283,7 +328,7 @@ function startTimer() {
     let m = Math.floor(timeSeconds / 60).toString().padStart(2, '0');
     let s = (timeSeconds % 60).toString().padStart(2, '0');
     document.getElementById('timer').innerText = `${m}:${s}`;
-    saveProgress(); // Har second timer ka state save ho raha hai
+    saveProgress(); // saving timer state every second
   }, 1000);
 }
 
@@ -309,30 +354,48 @@ function loadQuestion() {
   let tagsHtml = `<span style="border-color:var(--primary);color:var(--primary)">${q.diff}</span>`;
   if(q.py) tagsHtml += `<span style="background:var(--warning);color:#fff;border:none">PYQ</span>`;
   tagsHtml += `<span>${q.exam}</span>`;
+  
+  // Show flag status without colors
+  const qFlag = getQuestionFlag(q.id);
+  tagsHtml += `<span style="border:1px solid #ccc; padding:2px 8px; border-radius:3px;">[${qFlag}]</span>`;
+  
   document.getElementById('q-tags').innerHTML = tagsHtml;
   document.getElementById('q-text').innerText = q.q;
   
+  // store originals for potential revert
+  originalQuestionText = q.q;
+
   let currentOptions = [...q.optionsData];
   if (settings.randomO) currentOptions.sort(() => Math.random() - 0.5); 
 
   const letters = ['A', 'B', 'C', 'D'];
   let optsHtml = '';
   currentOptions.forEach((opt, idx) => {
-    // FIX 1: data-key="${opt.key}" yahan lagaya gaya hai exact match ke liye
     optsHtml += `
       <button class="opt-btn" id="opt-${idx}" data-key="${opt.key}" onclick="selectOption(${idx}, '${opt.key}', '${q.ansKey}')">
         <div class="opt-letter">${letters[idx]}</div>
         <div>${opt.text}</div>
       </button>
     `;
+    originalOptionTexts[idx] = opt.text; // keep track
   });
   
   document.getElementById('options-grid').innerHTML = optsHtml;
   document.getElementById('btn-skip').style.display = 'block';
   document.getElementById('btn-next').style.display = 'none';
   document.getElementById('exp-box').style.display = 'none';
+  document.getElementById('marathi-panel').style.display = 'none';
   
-  saveProgress(); // Question load hone par progress save
+  // Update flag button appearance based on current flag level
+  updateFlagButtonState(q.id);
+  
+  // If discussion panel is open, reload its messages for the new question
+  loadDiscussionMessages();
+  // clear any leftover text in the input box
+  const discInput = document.getElementById('discussion-input');
+  if (discInput) discInput.value = '';
+  
+  saveProgress(); // save progress after loading question
 }
 
 function selectOption(uiIndex, selectedKey, correctKey) {
@@ -353,7 +416,7 @@ function selectOption(uiIndex, selectedKey, correctKey) {
   }
   
   showExplanation(q.exp);
-  saveProgress(); // Answer dene ke baad progress save
+  saveProgress(); // save progress after answering
 }
 
 function skipQ() {
@@ -376,7 +439,7 @@ function nextQ() {
 }
 
 function confirmExit() {
-  if(confirm("Kya aap sach mein exit karna chahte hain? Aapki progress delete ho jayegi.")) {
+  if(confirm("Are you sure you want to exit? Your progress will be lost.")) {
     clearInterval(timerInterval); 
     clearProgress(); // Exit karne par cache clear
     showScreen('select');
@@ -404,7 +467,8 @@ function finishQuiz() {
         subjectScores[ans.q.subject].correct++; 
     } else { 
         wrong++;
-        wrongQuestionsForRetry.push(ans.q); // Galat wale retry me jayenge
+        wrongQuestionsForRetry.push(ans.q); // wrong ones will go to retry
+
     }
   });
 
@@ -441,7 +505,7 @@ function finishQuiz() {
     <button class="btn btn-primary btn-lg" style="min-width: 45%;" onclick="showReview()">Review Answers →</button>
   `;
   
-  // Agar koi galat jawab diya hai tabhi ye retry button aayega
+  // retry button appears only if there was at least one wrong answer
   if(wrongQuestionsForRetry.length > 0) {
       actionButtonsHtml += `
       <button class="btn btn-lg" style="background: var(--warning); color: white; width: 100%; margin-top: 10px;" onclick="retryWrongAnswers()">
@@ -453,7 +517,8 @@ function finishQuiz() {
   showScreen('result');
 }
 
-// FIX 3 CONTINUED: Galat Jawabo ko firse khelna
+// FIX 3 CONTINUED: retry wrong/skipped questions
+
 function retryWrongAnswers() {
   currentQuiz = [...wrongQuestionsForRetry];
   if (settings.randomQ) currentQuiz.sort(() => Math.random() - 0.5);
@@ -469,6 +534,236 @@ function retryWrongAnswers() {
   showScreen('quiz');
   loadQuestion();
 }
+
+// ===== FLAGGING LOGIC (WITHOUT COLORS) =====
+function setQuestionFlag(flagValue) {
+  const q = currentQuiz[currentIndex];
+  if(!q || !flagValue) return;
+  
+  questionFlags[q.id] = flagValue;
+  localStorage.setItem('questionFlags', JSON.stringify(questionFlags));
+  console.log(`📌 Question flagged as: ${flagValue}`);
+}
+
+// ===== GEMINI AI FUNCTIONS =====
+
+// Show Hint
+async function showHint() {
+  const q = currentQuiz[currentIndex];
+  if(!q) return;
+  
+  const hintBtn = document.getElementById('btn-hint');
+  const originalText = hintBtn.innerText;
+  hintBtn.disabled = true;
+  hintBtn.innerText = '⏳ Getting hint...';
+  
+  try {
+    const hint = await getHint(q.q, q.optionsData);
+    document.getElementById('exp-label').innerText = '💡 Hint';
+    document.getElementById('exp-text').innerText = hint;
+    document.getElementById('exp-box').style.display = 'block';
+  } catch (error) {
+    document.getElementById('exp-text').innerText = 'Error getting hint: ' + error.message;
+    document.getElementById('exp-box').style.display = 'block';
+  } finally {
+    hintBtn.disabled = false;
+    hintBtn.innerText = originalText;
+  }
+}
+
+// Show Detailed Explanation
+async function showDetailedExplanation() {
+  const q = currentQuiz[currentIndex];
+  if(!q) return;
+  
+  const explainBtn = document.getElementById('btn-explain');
+  const originalText = explainBtn.innerText;
+  explainBtn.disabled = true;
+  explainBtn.innerText = '⏳ Getting explanation...';
+  
+  try {
+    const correctOptObj = q.optionsData.find(o => o.key === q.ansKey);
+    const correctAnswerText = correctOptObj ? correctOptObj.text : 'Unknown';
+    
+    const explanation = await getExplanation(q.q, correctAnswerText, q.exp);
+    document.getElementById('exp-label').innerText = '📖 Detailed Explanation';
+    document.getElementById('exp-text').innerText = explanation;
+    document.getElementById('exp-box').style.display = 'block';
+  } catch (error) {
+    document.getElementById('exp-text').innerText = 'Error getting explanation: ' + error.message;
+    document.getElementById('exp-box').style.display = 'block';
+  } finally {
+    explainBtn.disabled = false;
+    explainBtn.innerText = originalText;
+  }
+}
+
+// Toggle Discussion Panel
+function toggleDiscussionPanel() {
+  const panel = document.getElementById('discussion-panel');
+  const btn = document.getElementById('btn-discussion-toggle');
+  
+  if (panel.style.display === 'none') {
+    panel.style.display = 'block';
+    btn.style.background = '#3b82f6';
+    btn.style.color = 'white';
+    loadDiscussionMessages();
+    // focus on input and set up Enter key listener
+    const input = document.getElementById('discussion-input');
+    input.focus();
+    setupEnterKeyListener();
+  } else {
+    panel.style.display = 'none';
+    btn.style.background = '';
+    btn.style.color = '';
+  }
+}
+
+// Add Enter key support for discussion input
+function setupEnterKeyListener() {
+  const input = document.getElementById('discussion-input');
+  if (input) {
+    input.onkeypress = function(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendDiscussionMessage();
+      }
+    };
+  }
+}
+
+// Translate current question + options to Marathi
+async function translateToMarathi() {
+  const q = currentQuiz[currentIndex];
+  if (!q) return;
+
+  const btn = document.getElementById('btn-translate');
+  const panel = document.getElementById('marathi-panel');
+
+  // toggle panel visibility
+  if (panel.style.display === 'block') {
+    panel.style.display = 'none';
+    return;
+  }
+
+  const originalTxt = btn.innerText;
+  btn.disabled = true;
+  btn.innerText = '⏳ Translating...';
+
+  const questionDiv = document.getElementById('marathi-question');
+  const optionsDiv = document.getElementById('marathi-options');
+  questionDiv.innerText = '⏳ Translating question...';
+  optionsDiv.innerHTML = '';
+  
+  try {
+    // gather options in their correct display order
+    const displayedOpts = [];
+    document.querySelectorAll('.opt-btn').forEach((optBtn) => {
+      const optText = optBtn.querySelector('div:nth-child(2)').innerText;
+      displayedOpts.push(optText);
+    });
+    
+    const result = await getMarathiTranslation(q.q, displayedOpts);
+    
+    // display question
+    if (result && result.question && result.question.trim() !== '') {
+      questionDiv.innerText = result.question;
+    } else {
+      questionDiv.innerText = '❌ Question translation not available';
+    }
+    
+    // display options
+    if (result && result.options && result.options.length > 0) {
+      let optsHtml = '';
+      result.options.forEach((optText, idx) => {
+        if (optText && optText.trim() !== '') {
+          optsHtml += `<div style="padding:10px 8px; background:white; border-radius:3px; border-left:3px solid #f59e0b; margin-bottom:6px;">
+            <strong>${String.fromCharCode(65+idx)})</strong> ${optText}
+          </div>`;
+        }
+      });
+      if (optsHtml === '') {
+        optsHtml = '<div style="color:#666; padding:10px;">Options not translated</div>';
+      }
+      optionsDiv.innerHTML = optsHtml;
+    }
+    
+    panel.style.display = 'block';
+  } catch (err) {
+    console.error('Translation error', err);
+    questionDiv.innerText = '❌ Error: ' + err.message;
+    optionsDiv.innerHTML = '';
+  } finally {
+    btn.disabled = false;
+    btn.innerText = '🔁 Marathi';
+  }
+}
+
+// Load Discussion Messages with better formatting
+function loadDiscussionMessages() {
+  const q = currentQuiz[currentIndex];
+  if(!q) return;
+  
+  const key = `discussion_${q.id}`;
+  const messages = JSON.parse(localStorage.getItem(key) || '[]');
+  const messagesDiv = document.getElementById('discussion-messages');
+  
+  let html = '';
+  messages.forEach(msg => {
+    const isUser = msg.sender === 'You';
+    const bgColor = isUser ? '#e0f2fe' : '#f0fdf4';
+    const borderColor = isUser ? '#0284c7' : '#16a34a';
+    html += `<div style="margin-bottom:10px; padding:10px; background:${bgColor}; border-left:3px solid ${borderColor}; border-radius:4px;">
+      <div style="font-size:12px; color:#666; font-weight:600; margin-bottom:4px;">${msg.sender}</div>
+      <div style="font-size:13px; color:#333; line-height:1.5;">${msg.text}</div>
+    </div>`;
+  });
+  
+  messagesDiv.innerHTML = html || '<div style="text-align:center; color:#999; padding:20px;">Start chatting - ask anything about this question!</div>';
+  // auto scroll to bottom
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+// store original texts so we can revert translations if needed
+let originalQuestionText = '';
+let originalOptionTexts = [];
+// Send Discussion Message
+async function sendDiscussionMessage() {
+  const q = currentQuiz[currentIndex];
+  if(!q) return;
+  
+  const input = document.getElementById('discussion-input');
+  const userMessage = input.value.trim();
+  if(!userMessage) return;
+  
+  const sendBtn = document.getElementById('btn-send-message');
+  const originalText = sendBtn.innerText;
+  sendBtn.disabled = true;
+  sendBtn.innerText = '⏳ Sending...';
+  
+  try {
+    // Save user message
+    const key = `discussion_${q.id}`;
+    const messages = JSON.parse(localStorage.getItem(key) || '[]');
+    messages.push({ sender: 'You', text: userMessage });
+    
+    // Get AI response
+    const aiResponse = await getDiscussionResponse(q.q, userMessage);
+    messages.push({ sender: 'Teacher AI', text: aiResponse });
+    
+    // Save all messages
+    localStorage.setItem(key, JSON.stringify(messages));
+    
+    // Clear input and reload
+    input.value = '';
+    loadDiscussionMessages();
+  } catch (error) {
+    alert('Error: ' + error.message);
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.innerText = originalText;
+  }
+}
+
 
 
 // --- 5. REVIEW ---
@@ -498,7 +793,7 @@ function setRevFilter(filterType) {
       <div class="rev-item ${statusClass}">
         <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px; font-weight:600;">Q${i+1} • ${statusText}</div>
         <div class="rev-q">${ans.q.q}</div>
-        ${!ans.isCorrect ? `<div class="rev-ans user">Aapka Jawab: ${userAnswerText}</div>` : ''}
+        ${!ans.isCorrect ? `<div class="rev-ans user">Your Answer: ${userAnswerText}</div>` : ''}
         <div class="rev-ans correct">Correct Answer: ${correctAnswerText}</div>
         <div class="rev-exp"><strong>Explanation:</strong> ${ans.q.exp}</div>
       </div>
@@ -517,6 +812,7 @@ window.handleCheckboxChange = handleCheckboxChange;
 window.removeFilter = removeFilter;
 window.updateHeaderAndChips = updateHeaderAndChips;
 window.togglePY = togglePY;
+window.toggleFlagFilter = toggleFlagFilter;
 window.toggleMode = toggleMode;
 window.resetFilters = resetFilters;
 window.startQuiz = startQuiz;
@@ -528,3 +824,9 @@ window.showScreen = showScreen;
 window.setRevFilter = setRevFilter;
 window.showReview = showReview;
 window.retryWrongAnswers = retryWrongAnswers;
+window.showHint = showHint;
+window.showDetailedExplanation = showDetailedExplanation;
+window.toggleDiscussionPanel = toggleDiscussionPanel;
+window.translateToMarathi = translateToMarathi;
+window.sendDiscussionMessage = sendDiscussionMessage;
+window.setQuestionFlag = setQuestionFlag;

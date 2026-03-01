@@ -37,6 +37,8 @@
   .btn { padding: 10px 16px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; }
   .btn-primary { background: var(--primary); color: white; }
   .btn-primary:hover { background: var(--primary-hover); }
+  .btn-warning { background: var(--warning); color: #333; }
+  .btn-warning:hover { background: #d97706; }
   .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
   .btn-ghost:hover { background: var(--border); color: var(--text); }
   .btn-lg { padding: 14px 24px; font-size: 16px; flex: 1; }
@@ -96,7 +98,34 @@
     .span3 { grid-column: span 3; }
   }
   .fg-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-  
+  /* flag buttons on home screen */
+  .flag-btn {
+    border:1px solid var(--border);
+    padding:8px 12px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:13px;
+    background:white;
+    transition: background 0.2s, transform 0.1s, color 0.2s;
+  }
+  .flag-btn:hover {
+    background: var(--primary-hover);
+    color: white;
+    transform: scale(1.05);
+  }
+  .flag-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  select#flag-dropdown {
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  select#flag-dropdown:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67,56,202,0.2);
+  }  
   /* --- MULTI-SELECT CSS --- */
   .multi-select { position: relative; width: 100%; user-select: none; }
   .ms-header { padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--text); min-height: 42px; }
