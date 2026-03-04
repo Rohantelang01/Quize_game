@@ -5387,5 +5387,966 @@ const RAW_DATA = [
       ]
     }
   ]
+},
+{
+  "subject": "History",
+  "subject_id": "SUB_1",
+  "chapter": "Indian History",
+  "chapter_id": "CHA_1",
+  "section": "Ancient India",
+  "section_id": "SEC_2",
+  "topic": "Post-Maurya & Sangam Period",
+  "topic_id": "TOP_7",
+  "subtopics": [
+    {
+      "subtopic": "Native Successors of Mauryas",
+      "subtopic_id": "STOP_1",
+      "questions": [
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_1_Q001",
+          "question": "Who established the Sunga Dynasty by killing the last Mauryan ruler Brihadratha?",
+          "options": {
+            "A": "Agnimitra",
+            "B": "Pushyamitra Sunga",
+            "C": "Vasudeva",
+            "D": "Simuka"
+          },
+          "correct_answer": "B",
+          "explanation": "Pushyamitra Sunga, a Brahmin Commander-in-Chief of Brihadratha, established the Sunga Dynasty in 185 BC.",
+          "difficulty": "easy",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2019"
+          },
+          "tags": [
+            "sunga_dynasty",
+            "mauryan_empire",
+            "ancient_history"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_1_Q002",
+          "question": "Patanjali, the author of 'Mahabhasya', was the priest of which ruler?",
+          "options": {
+            "A": "Ashoka",
+            "B": "Kanishka",
+            "C": "Pushyamitra Sunga",
+            "D": "Gautamiputra Satakarni"
+          },
+          "correct_answer": "C",
+          "explanation": "Patanjali was the priest of the 2 Asvamedha Yajnas performed by Pushyamitra Sunga.",
+          "difficulty": "medium",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2020"
+          },
+          "tags": [
+            "patanjali",
+            "sunga_dynasty",
+            "literature"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_1_Q003",
+          "question": "Which famous Buddhist monument was built during the reign of the orthodox Hindu Sunga dynasty?",
+          "options": {
+            "A": "Amaravati Stupa",
+            "B": "Sanchi Stupa",
+            "C": "Bharhut Stupa",
+            "D": "Nagarjunakonda"
+          },
+          "correct_answer": "C",
+          "explanation": "The great Buddhist stupa at Bharhut (in M.P.) was built during the reign of Sungas.",
+          "difficulty": "medium",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": true,
+            "details": "RRB NTPC 2016"
+          },
+          "tags": [
+            "monuments",
+            "sunga_dynasty",
+            "buddhism"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_1_Q004",
+          "question": "Who was the founder of the Satavahana dynasty?",
+          "options": {
+            "A": "Gautamiputra Satakarni",
+            "B": "Simuka",
+            "C": "Hala",
+            "D": "Yajna Sri Satakarni"
+          },
+          "correct_answer": "B",
+          "explanation": "Simuka (60 BC-37 BC) was the founder of the Satavahana dynasty.",
+          "difficulty": "easy",
+          "exam": "SSC_MTS",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC MTS 2021"
+          },
+          "tags": [
+            "satavahana",
+            "dynasty_founders"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_1_Q005",
+          "question": "Which dynasty is credited with starting the practice of donating land with fiscal and administrative immunities to Brahmanas and Buddhist monks?",
+          "options": {
+            "A": "Mauryas",
+            "B": "Guptas",
+            "C": "Satavahanas",
+            "D": "Kushans"
+          },
+          "correct_answer": "C",
+          "explanation": "The Satavahanas started the practice of land grants to Brahmanas and Buddhist monks, which eventually weakened their authority.",
+          "difficulty": "hard",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2018"
+          },
+          "tags": [
+            "satavahana",
+            "land_grants",
+            "ancient_economy"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_1_Q006",
+          "question": "What was the official language of the Satavahanas?",
+          "options": {
+            "A": "Sanskrit",
+            "B": "Pali",
+            "C": "Tamil",
+            "D": "Prakrit"
+          },
+          "correct_answer": "D",
+          "explanation": "The official language of the Satavahanas was Prakrit.",
+          "difficulty": "medium",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": true,
+            "details": "RRB Group D 2018"
+          },
+          "tags": [
+            "satavahana",
+            "ancient_languages"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_1_Q007",
+          "question": "The Hathigumpha inscription near Bhubaneshwar provides information about which famous ruler?",
+          "options": {
+            "A": "Ashoka",
+            "B": "Kharavela",
+            "C": "Rudradaman",
+            "D": "Pulakesin II"
+          },
+          "correct_answer": "B",
+          "explanation": "The Hathigumpha inscription is the sole source of information about Kharavela, the 3rd ruler of the Cheti/Chedi dynasty of Kalinga.",
+          "difficulty": "medium",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2020"
+          },
+          "tags": [
+            "inscriptions",
+            "kharavela",
+            "chedi_dynasty"
+          ]
+        }
+      ]
+    },
+    {
+      "subtopic": "Foreign Successors of Mauryas",
+      "subtopic_id": "STOP_2",
+      "questions": [
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q008",
+          "question": "Who were the first rulers in India to issue gold coins?",
+          "options": {
+            "A": "Guptas",
+            "B": "Mauryas",
+            "C": "Indo-Greeks",
+            "D": "Kushans"
+          },
+          "correct_answer": "C",
+          "explanation": "The Indo-Greeks were the first rulers in India to issue coins attributed to kings and the first to issue gold coins.",
+          "difficulty": "medium",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2019"
+          },
+          "tags": [
+            "indo_greeks",
+            "coins",
+            "ancient_economy"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q009",
+          "question": "The famous Indo-Greek ruler Menander (Milinda) was converted to Buddhism by which monk?",
+          "options": {
+            "A": "Vasumitra",
+            "B": "Asvaghosha",
+            "C": "Nagasena",
+            "D": "Upagupta"
+          },
+          "correct_answer": "C",
+          "explanation": "Menander (165 BC-145 BC) was converted to Buddhism by Nagasena (also known as Nagarjuna).",
+          "difficulty": "medium",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "indo_greeks",
+            "buddhism",
+            "menander"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q010",
+          "question": "Which Saka ruler is famous for repairing the Sudarsan Lake of the Mauryan period?",
+          "options": {
+            "A": "Nahapana",
+            "B": "Chashtana",
+            "C": "Rudradaman",
+            "D": "Gondaphernes"
+          },
+          "correct_answer": "C",
+          "explanation": "Rudradaman (130 AD-150 AD) repaired the famous Sudarsan Lake to irrigate the dry region of Saurashtra.",
+          "difficulty": "hard",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2021"
+          },
+          "tags": [
+            "sakas",
+            "rudradaman",
+            "ancient_infrastructure"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q011",
+          "question": "The Vikrama Samvat (calendar era) is reckoned from which year?",
+          "options": {
+            "A": "78 AD",
+            "B": "58 BC",
+            "C": "319 AD",
+            "D": "606 AD"
+          },
+          "correct_answer": "B",
+          "explanation": "In 58 BC, King Vikramaditya of Ujjain fought against the Sakas, and the era called Vikrama Samvat is reckoned from this year.",
+          "difficulty": "easy",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": true,
+            "details": "RRB NTPC 2020"
+          },
+          "tags": [
+            "calendars",
+            "vikrama_samvat",
+            "sakas"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q012",
+          "question": "St. Thomas is said to have come to India for the propagation of Christianity during the reign of which king?",
+          "options": {
+            "A": "Gondaphernes",
+            "B": "Kanishka",
+            "C": "Rudradaman",
+            "D": "Kadphises I"
+          },
+          "correct_answer": "A",
+          "explanation": "St. Thomas came to India during the reign of the most famous Parthian king, Gondaphernes.",
+          "difficulty": "hard",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2018"
+          },
+          "tags": [
+            "parthians",
+            "christianity",
+            "gondaphernes"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q013",
+          "question": "The Kushans were originally one of the five clans of which tribe from Central Asia?",
+          "options": {
+            "A": "Hunas",
+            "B": "Yeuchi",
+            "C": "Scythians",
+            "D": "Pahlavas"
+          },
+          "correct_answer": "B",
+          "explanation": "The Kushans were one of the five Yeuchi clans of Central Asia.",
+          "difficulty": "medium",
+          "exam": "SSC_MTS",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "kushans",
+            "central_asia",
+            "yeuchi"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q014",
+          "question": "Who started the Saka Era in 78 AD, which is currently used by the Government of India?",
+          "options": {
+            "A": "Rudradaman",
+            "B": "Kanishka",
+            "C": "Vikramaditya",
+            "D": "Kadphises II"
+          },
+          "correct_answer": "B",
+          "explanation": "Kanishka started an era in 78 AD known as the Saka era, which is used by the Government of India.",
+          "difficulty": "easy",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2022"
+          },
+          "tags": [
+            "saka_era",
+            "kanishka",
+            "kushans"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q015",
+          "question": "During whose reign was the 4th Buddhist Council held in Kundalavana, Kashmir?",
+          "options": {
+            "A": "Ashoka",
+            "B": "Kanishka",
+            "C": "Harsha",
+            "D": "Samudragupta"
+          },
+          "correct_answer": "B",
+          "explanation": "In Kanishka's reign, the 4th Buddhist council was held where Mahayana Buddhism doctrines were finalized.",
+          "difficulty": "easy",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": true,
+            "details": "RRB NTPC 2016"
+          },
+          "tags": [
+            "buddhism",
+            "buddhist_council",
+            "kanishka"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q016",
+          "question": "Which dynasty controlled the famous Silk Route starting from China and passing through their empire?",
+          "options": {
+            "A": "Mauryas",
+            "B": "Guptas",
+            "C": "Kushans",
+            "D": "Satavahanas"
+          },
+          "correct_answer": "C",
+          "explanation": "The Kushans controlled the famous silk route, which was a source of great income for their empire.",
+          "difficulty": "medium",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2019"
+          },
+          "tags": [
+            "silk_route",
+            "kushans",
+            "ancient_trade"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_2_Q017",
+          "question": "Which Kushan ruler is also known as the 'Second Ashoka'?",
+          "options": {
+            "A": "Vema Kadphises",
+            "B": "Kanishka",
+            "C": "Vasudeva I",
+            "D": "Kujul Kadphises"
+          },
+          "correct_answer": "B",
+          "explanation": "Kanishka was a great patron of Buddhism and his vast empire earned him the title 'Second Ashoka'.",
+          "difficulty": "medium",
+          "exam": "SSC_MTS",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC MTS 2020"
+          },
+          "tags": [
+            "kanishka",
+            "kushans",
+            "titles"
+          ]
+        }
+      ]
+    },
+    {
+      "subtopic": "Facts About Post-Mauryas",
+      "subtopic_id": "STOP_3",
+      "questions": [
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_3_Q018",
+          "question": "Which school of sculpture shows a very evident influence of Greek art?",
+          "options": {
+            "A": "Amaravati School",
+            "B": "Mathura School",
+            "C": "Gandhar School",
+            "D": "Sarnath School"
+          },
+          "correct_answer": "C",
+          "explanation": "The influence of Greek sculpture is very evident in the Gandhar school, which developed under Saka-Kushans.",
+          "difficulty": "medium",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2017"
+          },
+          "tags": [
+            "art_and_culture",
+            "gandhar_school",
+            "sculpture"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_3_Q019",
+          "question": "Who discovered the monsoon sea-route to India from West Asia in 46-47 AD?",
+          "options": {
+            "A": "Ptolemy",
+            "B": "Hippalus",
+            "C": "Strabo",
+            "D": "Pliny"
+          },
+          "correct_answer": "B",
+          "explanation": "Hippalus, a Greek sailor, discovered the monsoon sea-route to India, greatly boosting trade.",
+          "difficulty": "hard",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "trade",
+            "hippalus",
+            "sea_route"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_3_Q020",
+          "question": "Which of the following was an important port on the Eastern Coast of India during the Post-Mauryan period?",
+          "options": {
+            "A": "Barygaza",
+            "B": "Barbaricum",
+            "C": "Aricamedu",
+            "D": "Muzris"
+          },
+          "correct_answer": "C",
+          "explanation": "Aricamedu (Podeku) was an important port near Pondicherry on the Eastern Coast.",
+          "difficulty": "medium",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2021"
+          },
+          "tags": [
+            "ancient_ports",
+            "aricamedu",
+            "trade"
+          ]
+        }
+      ]
+    },
+    {
+      "subtopic": "Three Early Kingdoms",
+      "subtopic_id": "STOP_4",
+      "questions": [
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_4_Q021",
+          "question": "What was the emblem of the Chera kingdom?",
+          "options": {
+            "A": "Tiger",
+            "B": "Bow",
+            "C": "Fish",
+            "D": "Boar"
+          },
+          "correct_answer": "B",
+          "explanation": "The emblem of the Chera kingdom was the Bow, and their capital was Vanjji.",
+          "difficulty": "easy",
+          "exam": "SSC_MTS",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC MTS 2019"
+          },
+          "tags": [
+            "chera",
+            "sangam_age",
+            "emblems"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_4_Q022",
+          "question": "Who was the founder of the famous Pattini cult (worship of goddess of chastity - Kannagi)?",
+          "options": {
+            "A": "Karikala",
+            "B": "Senguttuvan",
+            "C": "Nendujeliyan",
+            "D": "Elara"
+          },
+          "correct_answer": "B",
+          "explanation": "Senguttuvan, also known as Red Chera, was the greatest Chera king and founder of the Pattini cult.",
+          "difficulty": "hard",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2020"
+          },
+          "tags": [
+            "chera",
+            "senguttuvan",
+            "pattini_cult"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_4_Q023",
+          "question": "The Chola king Karikala is famous for constructing a 160 km embankment along which river?",
+          "options": {
+            "A": "Krishna",
+            "B": "Godavari",
+            "C": "Kaveri",
+            "D": "Tungabhadra"
+          },
+          "correct_answer": "C",
+          "explanation": "Karikala constructed a 160 km embankment along the Kaveri river with the help of 12,000 Sri Lankan slaves.",
+          "difficulty": "medium",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": true,
+            "details": "RRB NTPC 2021"
+          },
+          "tags": [
+            "chola",
+            "karikala",
+            "kaveri"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_4_Q024",
+          "question": "What was the coastal capital and main port of the Chola kingdom?",
+          "options": {
+            "A": "Uraiyaur",
+            "B": "Puhar",
+            "C": "Muzris",
+            "D": "Korkai"
+          },
+          "correct_answer": "B",
+          "explanation": "Puhar (Kaveripattanam) was the main port and served as the alternative coastal capital of the Cholas.",
+          "difficulty": "medium",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "chola",
+            "ports",
+            "puhar"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_4_Q025",
+          "question": "The Pandya kingdom, with its capital at Madurai, was famous globally for the trade of what?",
+          "options": {
+            "A": "Cotton",
+            "B": "Spices",
+            "C": "Pearls",
+            "D": "Silk"
+          },
+          "correct_answer": "C",
+          "explanation": "Mentioned first by Megasthenes, the Pandya kingdom was famous for pearls.",
+          "difficulty": "easy",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2018"
+          },
+          "tags": [
+            "pandya",
+            "pearls",
+            "ancient_trade"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_4_Q026",
+          "question": "Which of the three early kingdoms had the 'Tiger' as its emblem?",
+          "options": {
+            "A": "Chera",
+            "B": "Chola",
+            "C": "Pandya",
+            "D": "Pallava"
+          },
+          "correct_answer": "B",
+          "explanation": "The Chola kingdom's emblem was the Tiger.",
+          "difficulty": "easy",
+          "exam": "SSC_MTS",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC MTS 2021"
+          },
+          "tags": [
+            "chola",
+            "emblems",
+            "sangam_age"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_4_Q027",
+          "question": "Which city was laid under a curse by Kannagi (Kovalan's wife) after the king unjustly accused Kovalan of theft?",
+          "options": {
+            "A": "Uraiyaur",
+            "B": "Vanjji",
+            "C": "Puhar",
+            "D": "Madurai"
+          },
+          "correct_answer": "D",
+          "explanation": "The Pandya king Nendujelian accused Kovalan of theft. As a result, Madurai was cursed by Kannagi.",
+          "difficulty": "hard",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "madurai",
+            "kannagi",
+            "pandya"
+          ]
+        }
+      ]
+    },
+    {
+      "subtopic": "Sangam Administration",
+      "subtopic_id": "STOP_5",
+      "questions": [
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_5_Q028",
+          "question": "In the Sangam administration, what was the 'Avai'?",
+          "options": {
+            "A": "Custom duties",
+            "B": "A big village",
+            "C": "Court of the crowned monarch",
+            "D": "The council of ministers"
+          },
+          "correct_answer": "C",
+          "explanation": "'Avai' was the court of the crowned monarch where the King sat at the center of administration.",
+          "difficulty": "medium",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "sangam_admin",
+            "avai"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_5_Q029",
+          "question": "The term 'Karai' in Sangam administration refers to what?",
+          "options": {
+            "A": "Land Tax",
+            "B": "Custom duties",
+            "C": "Forced gift",
+            "D": "Booty collected in war"
+          },
+          "correct_answer": "A",
+          "explanation": "In the revenue administration of the Sangam Age, 'Karai' referred to the Land Tax.",
+          "difficulty": "hard",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2019"
+          },
+          "tags": [
+            "sangam_admin",
+            "taxation",
+            "karai"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_5_Q030",
+          "question": "What were the custom duties called during the Sangam period?",
+          "options": {
+            "A": "Irai",
+            "B": "Ulgu",
+            "C": "Iravu",
+            "D": "Variyam"
+          },
+          "correct_answer": "B",
+          "explanation": "'Ulgu' meant custom duties in the Sangam revenue administration.",
+          "difficulty": "hard",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "sangam_admin",
+            "taxation",
+            "ulgu"
+          ]
+        }
+      ]
+    },
+    {
+      "subtopic": "Sangam Literature",
+      "subtopic_id": "STOP_6",
+      "questions": [
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q031",
+          "question": "What does the term 'Sangam' primarily refer to in ancient Indian history?",
+          "options": {
+            "A": "A military alliance",
+            "B": "A trade guild",
+            "C": "An assembly of Tamil poets",
+            "D": "A religious festival"
+          },
+          "correct_answer": "C",
+          "explanation": "Sangam was an assembly of Tamil poets held under royal patronage of Pandyan kings in Madurai.",
+          "difficulty": "easy",
+          "exam": "SSC_MTS",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC MTS 2020"
+          },
+          "tags": [
+            "sangam_literature",
+            "tamil_poets"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q032",
+          "question": "Which text is the only surviving work of the Second Sangam and deals with Tamil grammar?",
+          "options": {
+            "A": "Ettutogai",
+            "B": "Tolkappiyam",
+            "C": "Kural",
+            "D": "Pattupattu"
+          },
+          "correct_answer": "B",
+          "explanation": "Tolkappiyam, written by Tolakapiyyar, is an early work on Tamil grammar and the only surviving text from the second Sangam.",
+          "difficulty": "medium",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2021"
+          },
+          "tags": [
+            "tolkappiyam",
+            "tamil_grammar",
+            "sangam_literature"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q033",
+          "question": "Who is the author of the text 'Kural' or 'Tirukkural'?",
+          "options": {
+            "A": "Tolakapiyyar",
+            "B": "Ilango Adigal",
+            "C": "Sittalar Satanar",
+            "D": "Tiruvalluvar"
+          },
+          "correct_answer": "D",
+          "explanation": "'Kural' was written by Tiruvalluvar. It is a treatise on polity, ethics, and social norms.",
+          "difficulty": "easy",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2019"
+          },
+          "tags": [
+            "tiruvalluvar",
+            "kural",
+            "sangam_literature"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q034",
+          "question": "Which text is often referred to as 'The Bible of Tamil Land'?",
+          "options": {
+            "A": "Silappadikaram",
+            "B": "Tolkappiyam",
+            "C": "Kural",
+            "D": "Manimekalai"
+          },
+          "correct_answer": "C",
+          "explanation": "Kural or Tirukkural, written by Tiruvalluvar, is called 'The Bible of Tamil Land'.",
+          "difficulty": "medium",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": true,
+            "details": "RRB NTPC 2016"
+          },
+          "tags": [
+            "kural",
+            "sangam_literature"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q035",
+          "question": "The epic 'Silappadikaram', which deals with the story of Kovalan and Madhavi, was written by whom?",
+          "options": {
+            "A": "Ilango Adigal",
+            "B": "Sittalar Satanar",
+            "C": "Tiruttakrdevas",
+            "D": "Perudevanar"
+          },
+          "correct_answer": "A",
+          "explanation": "'Silappadikaram' (The story of the Anklet) was written by Ilango Adigal.",
+          "difficulty": "medium",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2020"
+          },
+          "tags": [
+            "silappadikaram",
+            "ilango_adigal",
+            "epics"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q036",
+          "question": "Which Tamil epic is called the 'Iliad of Tamil poetry'?",
+          "options": {
+            "A": "Manimekalai",
+            "B": "Sivaga Sindamani",
+            "C": "Bharatam",
+            "D": "Silappadikaram"
+          },
+          "correct_answer": "D",
+          "explanation": "Silappadikaram is highly revered and is called the 'Iliad of Tamil poetry'.",
+          "difficulty": "medium",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2021"
+          },
+          "tags": [
+            "silappadikaram",
+            "tamil_poetry"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q037",
+          "question": "'Manimekalai', written by Sittalar Satanar, is a sequel to which famous Tamil epic?",
+          "options": {
+            "A": "Tolkappiyam",
+            "B": "Silappadikaram",
+            "C": "Sivaga Sindamani",
+            "D": "Kural"
+          },
+          "correct_answer": "B",
+          "explanation": "Manimekalai is a sequel to Silappadikaram and deals with the adventures of the daughter born to Kovalan and Madhavi.",
+          "difficulty": "hard",
+          "exam": "SSC_CGL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CGL 2018"
+          },
+          "tags": [
+            "manimekalai",
+            "silappadikaram",
+            "epics"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q038",
+          "question": "The epic 'Manimekalai' is strongly tinged with the beliefs of which religion?",
+          "options": {
+            "A": "Hinduism",
+            "B": "Jainism",
+            "C": "Buddhism",
+            "D": "Ajivika"
+          },
+          "correct_answer": "C",
+          "explanation": "Manimekalai is strongly tinged with Buddhism.",
+          "difficulty": "medium",
+          "exam": "RAILWAY",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "manimekalai",
+            "buddhism",
+            "sangam_literature"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q039",
+          "question": "The text 'Sivaga Sindamani', written by Jain Tiruttakrdevas, is associated with which religion?",
+          "options": {
+            "A": "Buddhism",
+            "B": "Hinduism",
+            "C": "Jainism",
+            "D": "Sikhism"
+          },
+          "correct_answer": "C",
+          "explanation": "As the name of the author (Jain Tiruttakrdevas) suggests, Sivaga Sindamani is strongly tinged with Jainism.",
+          "difficulty": "medium",
+          "exam": "SSC_MTS",
+          "prev_year": {
+            "asked": false,
+            "details": ""
+          },
+          "tags": [
+            "sivaga_sindamani",
+            "jainism",
+            "sangam_literature"
+          ]
+        },
+        {
+          "question_id": "SUB_1_CHA_1_SEC_2_TOP_7_STOP_6_Q040",
+          "question": "How many Sangam assemblies were held according to tradition?",
+          "options": {
+            "A": "Two",
+            "B": "Three",
+            "C": "Four",
+            "D": "Five"
+          },
+          "correct_answer": "B",
+          "explanation": "According to tradition, three Sangam assemblies were held under the royal patronage of Pandyan kings.",
+          "difficulty": "easy",
+          "exam": "SSC_CHSL",
+          "prev_year": {
+            "asked": true,
+            "details": "SSC CHSL 2017"
+          },
+          "tags": [
+            "sangam_assemblies",
+            "ancient_history"
+          ]
+        }
+      ]
+    }
+  ]
 }
 ]
